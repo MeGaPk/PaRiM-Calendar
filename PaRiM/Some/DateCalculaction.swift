@@ -67,7 +67,7 @@ class DateCalculation {
 
     private func updateStartDate() {
         calendar.firstWeekday = currentWeekday.rawValue
-        startDate = calendar.weekBoundary(for: Date())!.startOfWeek!
+        startDate = calendar.weekBoundary(for: startDate)!.startOfWeek!
     }
 }
 
