@@ -6,7 +6,14 @@ import Foundation
 
 private let requestStringFormatter = Configure(DateFormatter()) {
     $0.dateFormat = "yyyy-MM-dd"
-    $0.timeZone = TimeZone(identifier: "UTC")
+}
+
+private let sectionFormatter = Configure(DateFormatter()) {
+    $0.dateFormat = "dd.MM EEEE"
+}
+
+private let titleFormatter = Configure(DateFormatter()) {
+    $0.dateFormat = "dd.MM.yyyy"
 }
 
 extension Date {
@@ -15,20 +22,10 @@ extension Date {
     }
 }
 
-private let sectionFormatter = Configure(DateFormatter()) {
-    $0.dateFormat = "dd.MM EEEE"
-    $0.timeZone = TimeZone(identifier: "UTC")
-}
-
 extension Date {
     func toSectionString() -> String {
         sectionFormatter.string(from: self)
     }
-}
-
-private let titleFormatter = Configure(DateFormatter()) {
-    $0.dateFormat = "dd.MM.yyyy"
-    $0.timeZone = TimeZone(identifier: "UTC")
 }
 
 extension Date {

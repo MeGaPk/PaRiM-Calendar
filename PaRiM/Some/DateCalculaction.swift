@@ -34,7 +34,7 @@ enum Weekday: Int, CaseIterable {
 }
 
 class DateCalculation {
-    private let calendar = Calendar.current
+    private var calendar = Calendar.current
 
     private var minDate = Date()
     private var maxDate = Date()
@@ -49,15 +49,15 @@ class DateCalculation {
 
     var currentWeekday: Weekday = .monday {
         didSet {
-            updateCurrentDay()
+            updateStartDate()
         }
     }
 
-    private var currentDate = Date()
+    private var startDate = Date()
 
     init() {
         updateMaxRangeDays()
-        updateCurrentDay()
+        updateStartDate()
     }
 
     private func updateMaxRangeDays() {
@@ -65,66 +65,85 @@ class DateCalculation {
         maxDate = calendar.date(byAdding: .day, value: maxRangeDays, to: Date())!
     }
 
-    private func updateCurrentDay() {
-        var comps = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: currentDate)
-        comps.weekday = currentWeekday.rawValue
-        currentDate = calendar.date(from: comps)!
+    private func updateStartDate() {
+        calendar.firstWeekday = currentWeekday.rawValue
+        startDate = calendar.weekBoundary(for: Date())!.startOfWeek!
     }
 }
 
 extension DateCalculation {
 
     func getWeekDays() -> [Date] {
-        let startDate = getFirstDay()
-        let dateEnding = getLastDay()
-
         var dates = [Date]()
-        let components = DateComponents(hour: 0, minute: 0, second: 0) // midnight
-        calendar.enumerateDates(startingAfter: startDate, matching: components, matchingPolicy: .nextTime) { (date, strict, stop) in
-            if let date = date {
-                if date <= dateEnding {
-                    dates.append(date)
-                } else {
-                    stop = true
-                }
+        var days = DateComponents()
+        var dayCount = 0
+        while true {
+            days.day = dayCount
+            let date = calendar.date(byAdding: days, to: getFirstDay())!
+            if date.compare(getLastDay()) == .orderedDescending {
+                break
             }
+            dayCount += 1
+            dates.append(date)
         }
+
         return dates
     }
 
     func getFirstDay() -> Date {
-        var startDate = currentDate
-        if startDate < minDate {
+        var startDate = startDate
+        if startDate <= minDate {
             startDate = minDate
         }
         return startDate
     }
 
     func getLastDay() -> Date {
-        var dateEnding = calendar.date(byAdding: .day, value: duration, to: getFirstDay())!
-        if dateEnding > maxDate {
-            dateEnding = maxDate
-        }
-        return dateEnding
+        calendar.weekBoundary(for: startDate)!.endOfWeek!
     }
 
     func nextWeek() {
         if hasNextWeek() {
-            currentDate = calendar.date(byAdding: .day, value: 7, to: currentDate)!
+            startDate = calendar.date(byAdding: .day, value: 7, to: startDate)!
         }
     }
 
     func previousWeek() {
         if hasPreviousWeek() {
-            currentDate = calendar.date(byAdding: .day, value: -7, to: currentDate)!
+            startDate = calendar.date(byAdding: .day, value: -7, to: startDate)!
         }
     }
 
     func hasNextWeek() -> Bool {
-        currentDate <= maxDate
+        startDate <= maxDate
     }
 
     func hasPreviousWeek() -> Bool {
-        currentDate >= minDate
+        startDate >= minDate
+    }
+}
+
+private extension Calendar {
+    /*
+    Week boundary is considered the start of
+    the first day of the week and the end of
+    the last day of the week
+    */
+    typealias WeekBoundary = (startOfWeek: Date?, endOfWeek: Date?)
+
+    func weekBoundary(for date: Date) -> WeekBoundary? {
+        let components = dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)
+
+        guard let startOfWeek = self.date(from: components) else {
+            return nil
+        }
+
+        let endOfWeekOffset = weekdaySymbols.count - 1
+        let endOfWeekComponents = DateComponents(day: endOfWeekOffset, hour: 23, minute: 59, second: 59)
+        guard let endOfWeek = self.date(byAdding: endOfWeekComponents, to: startOfWeek) else {
+            return nil
+        }
+
+        return (startOfWeek, endOfWeek)
     }
 }
