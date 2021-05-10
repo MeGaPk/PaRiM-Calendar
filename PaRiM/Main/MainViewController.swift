@@ -25,13 +25,21 @@ class MainViewController: UIViewController {
 
         presenter.load()
 
-//        let calculation = DateCalculation()
-//        print(calculation.getWeekDays())
-//        calculation.previousWeek()
-//        print(calculation.getWeekDays())
-//        calculation.previousWeek()
-//        print(calculation.getWeekDays())
-//        presenter.load()
+        mainView.headerView.firstDayButton.addTarget(self, action: #selector(firstDayButtonTapped), for: .touchUpInside)
+        setTitle(modal.calendar.currentWeekday)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        firstDayButtonTapped()
+
+    }
+
+    @objc func firstDayButtonTapped() {
+        WeekdayPicker.show(on: view!, selected: modal.calendar.currentWeekday) { weekday in
+            self.modal.calendar.currentWeekday = weekday
+            self.setTitle(weekday)
+        }
     }
 
     override func viewWillLayoutSubviews() {
@@ -50,3 +58,8 @@ class MainViewController: UIViewController {
     }
 }
 
+extension MainViewController {
+    func setTitle(_ weekday: Weekday) {
+        mainView.headerView.firstDayButton.setTitle("\(weekday.toString())", for: .normal)
+    }
+}

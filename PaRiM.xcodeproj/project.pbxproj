@@ -17,6 +17,7 @@
 		5F7CE2BB0968872CF67043A5 /* EmptyCalendarCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE3AAE236AB474C69C508 /* EmptyCalendarCellView.swift */; };
 		5F7CE2EFEBF4766AD5D6620B /* CalendarProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CEC5A11F23948B3D1FE4A /* CalendarProvider.swift */; };
 		5F7CE484E1EEB23777A93C41 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE407E307802272D93513 /* MainHeaderView.swift */; };
+		5F7CE4997F09C48A725D8F2B /* WeekdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE4252B64EC3890ABA465 /* WeekdayPicker.swift */; };
 		5F7CE638C47A6798BE475878 /* CalendarEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CEE1D864987D12EDC6A1C /* CalendarEvent.swift */; };
 		5F7CE6E4765C82467D089393 /* CalendarCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE71CC5E664F476E02658 /* CalendarCellView.swift */; };
 		5F7CE77D44E7AD0E581AED74 /* AmazonAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CEFD05F56E522B3DF7CBC /* AmazonAPI.swift */; };
@@ -41,6 +42,7 @@
 		5F7CE1E847886F10CE872EFB /* CalendarModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarModal.swift; sourceTree = "<group>"; };
 		5F7CE3AAE236AB474C69C508 /* EmptyCalendarCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyCalendarCellView.swift; sourceTree = "<group>"; };
 		5F7CE407E307802272D93513 /* MainHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
+		5F7CE4252B64EC3890ABA465 /* WeekdayPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekdayPicker.swift; sourceTree = "<group>"; };
 		5F7CE71CC5E664F476E02658 /* CalendarCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCellView.swift; sourceTree = "<group>"; };
 		5F7CE7BEEE74B97EA87D84F3 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		5F7CEA3D5B0E791695929B81 /* MainViewPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewPresenter.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				5F7CEA59F533A05191D885DE /* DateCalculaction.swift */,
+				5F7CE4252B64EC3890ABA465 /* WeekdayPicker.swift */,
 			);
 			path = Some;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				5F7CE638C47A6798BE475878 /* CalendarEvent.swift in Sources */,
 				5F7CE7E6F4B00C30BF3EA8B9 /* CalendarModal.swift in Sources */,
 				5F7CE8673DE5699B7B6F0E11 /* DateCalculaction.swift in Sources */,
+				5F7CE4997F09C48A725D8F2B /* WeekdayPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
