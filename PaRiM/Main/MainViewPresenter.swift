@@ -17,44 +17,34 @@ class CalenderPresenter: NSObject {
         }
     }
 
-    private(set) var events: [String: [CalendarEvent]]?
+    var modal: CalendarModal?
 
-    public var provider: CalendarProvider?
-
-    var dates = ["2019-02-01"]
-
-    public func load() {
-        provider?.getEvents(from: "2019-02-01", to: "2019-02-28") { [weak self]result in
-            switch result {
-            case .success(let holidays):
-                print(holidays)
-                self?.events = holidays;
-                self?.tableView?.reloadData()
-            case .failure(let error):
-                print("error: \(error)")
-            }
-        }
+    func load() {
+        modal?.load(completion: {
+            self.tableView?.reloadData()
+        })
     }
+
 }
 
 extension CalenderPresenter: UITableViewDataSource {
     public func numberOfSections(in tableView: UITableView) -> Int {
-//        0//
-        self.dates.count
+        modal?.dates.count ?? 0
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        0
-        self.events?[self.dates[section]]?.count ?? 1
+        let date = modal?.dates[section] ?? ""
+        return modal?.events[date]?.count ?? 1
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let event = events?[dates[indexPath.section]]?[indexPath.row] else {
+        let date = modal?.dates[indexPath.section] ?? ""
+        guard let event = modal?.events[date]?[indexPath.row] else {
             let cell = tableView.dequeueReusableCell(withIdentifier: EmptyCalendarCellView.identifier, for: indexPath) as? EmptyCalendarCellView
             return cell!
         }
         if let cell = tableView.dequeueReusableCell(withIdentifier: CalendarCellView.identifier, for: indexPath) as? CalendarCellView {
-            cell.titleLabel.text = "Cell \(event.name)"
+            cell.titleLabel.text = event.name
             return cell
         }
         fatalError("Unknown cell")
@@ -69,7 +59,7 @@ extension CalenderPresenter: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: CalendarHeaderFooterView.identifier) as? CalendarHeaderFooterView {
-            view.titleLabel.text = "Section: \(section)"
+            view.titleLabel.text = modal?.dates[section]
             view.contentView.backgroundColor = .yellow
             return view
         }

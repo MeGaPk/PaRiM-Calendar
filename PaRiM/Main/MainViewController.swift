@@ -13,15 +13,24 @@ class MainViewController: UIViewController {
 
     let presenter = CalenderPresenter()
     let mainView = MainView()
-    let provider: CalendarProvider = AmazonAPI()
+
+    let modal = CalendarModal(provider: AmazonAPI())
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view?.backgroundColor = .white
         presenter.tableView = mainView.tableView
-        presenter.provider = provider
+        presenter.modal = modal
 
+        presenter.load()
+
+//        let calculation = DateCalculation()
+//        print(calculation.getWeekDays())
+//        calculation.previousWeek()
+//        print(calculation.getWeekDays())
+//        calculation.previousWeek()
+//        print(calculation.getWeekDays())
 //        presenter.load()
     }
 
