@@ -19,10 +19,10 @@ class CalenderPresenter: NSObject {
 
     var modal: CalendarModal?
 
-    func load() {
-        modal?.load(completion: {
+    func load(dates: [Date]) {
+        modal?.load(dates: dates) {
             self.tableView?.reloadData()
-        })
+        }
     }
 
 }
@@ -33,13 +33,14 @@ extension CalenderPresenter: UITableViewDataSource {
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let date = modal?.dates[section] ?? ""
-        return modal?.events[date]?.count ?? 1
+        guard let date = modal?.dates[section] else {
+            return 1
+        }
+        return modal?.events[date.toRequestString()]?.count ?? 1
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let date = modal?.dates[indexPath.section] ?? ""
-        guard let event = modal?.events[date]?[indexPath.row] else {
+        guard let date = modal?.dates[indexPath.section], let event = modal?.events[date.toRequestString()]?[indexPath.row] else {
             let cell = tableView.dequeueReusableCell(withIdentifier: EmptyCalendarCellView.identifier, for: indexPath) as? EmptyCalendarCellView
             return cell!
         }
@@ -59,7 +60,7 @@ extension CalenderPresenter: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: CalendarHeaderFooterView.identifier) as? CalendarHeaderFooterView {
-            view.titleLabel.text = modal?.dates[section]
+            view.titleLabel.text = modal?.dates[section].toSectionString()
             view.contentView.backgroundColor = .yellow
             return view
         }

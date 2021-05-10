@@ -9,28 +9,24 @@ protocol CalendarModalDelegate: AnyObject {
 }
 
 class CalendarModal {
-    let calendar = DateCalculation()
-
     weak var delegate: CalendarModalDelegate?
 
     private var provider: CalendarProvider
 
-    private(set) var dates: [String] = []
+    private(set) var dates: [Date] = []
     private(set) var events: [String: [CalendarEvent]] = [:]
 
     init(provider: CalendarProvider) {
         self.provider = provider
     }
 
-    public func load(completion: @escaping () -> ()) {
-        dates = calendar.getWeekDays().map { s in
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            formatter.timeZone = TimeZone(identifier: "UTC")
-            return formatter.string(from: s)
+    public func load(dates: [Date], completion: @escaping () -> ()) {
+        guard let from = dates.first?.toRequestString(), let to = dates.last?.toRequestString() else {
+            return
         }
 
-        provider.getEvents(from: dates.first!, to: dates.last!) { [weak self]result in
+        self.dates = dates
+        provider.getEvents(from: from, to: to) { [weak self]result in
             switch result {
             case .success(let holidays):
                 print(holidays)
@@ -41,6 +37,4 @@ class CalendarModal {
             completion()
         }
     }
-
-
 }

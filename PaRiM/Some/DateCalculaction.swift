@@ -60,17 +60,23 @@ class DateCalculation {
         updateCurrentDay()
     }
 
+    private func updateMaxRangeDays() {
+        minDate = calendar.date(byAdding: .day, value: -maxRangeDays, to: Date())!
+        maxDate = calendar.date(byAdding: .day, value: maxRangeDays, to: Date())!
+    }
+
+    private func updateCurrentDay() {
+        var comps = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: currentDate)
+        comps.weekday = currentWeekday.rawValue
+        currentDate = calendar.date(from: comps)!
+    }
+}
+
+extension DateCalculation {
+
     func getWeekDays() -> [Date] {
-        var startDate = currentDate
-        var dateEnding = calendar.date(byAdding: .day, value: duration, to: startDate)!
-
-        if startDate < minDate {
-            startDate = minDate
-        }
-
-        if dateEnding > maxDate {
-            dateEnding = maxDate
-        }
+        let startDate = getFirstDay()
+        let dateEnding = getLastDay()
 
         var dates = [Date]()
         let components = DateComponents(hour: 0, minute: 0, second: 0) // midnight
@@ -86,37 +92,39 @@ class DateCalculation {
         return dates
     }
 
+    func getFirstDay() -> Date {
+        var startDate = currentDate
+        if startDate < minDate {
+            startDate = minDate
+        }
+        return startDate
+    }
+
+    func getLastDay() -> Date {
+        var dateEnding = calendar.date(byAdding: .day, value: duration, to: getFirstDay())!
+        if dateEnding > maxDate {
+            dateEnding = maxDate
+        }
+        return dateEnding
+    }
+
     func nextWeek() {
-        currentDate = calendar.date(byAdding: .day, value: 7, to: currentDate)!
+        if hasNextWeek() {
+            currentDate = calendar.date(byAdding: .day, value: 7, to: currentDate)!
+        }
     }
 
     func previousWeek() {
-        currentDate = calendar.date(byAdding: .day, value: -7, to: currentDate)!
+        if hasPreviousWeek() {
+            currentDate = calendar.date(byAdding: .day, value: -7, to: currentDate)!
+        }
     }
 
     func hasNextWeek() -> Bool {
-        currentDate < maxDate
+        currentDate <= maxDate
     }
 
     func hasPreviousWeek() -> Bool {
-        currentDate <= minDate
-    }
-
-//    func daysBetween() {
-// Replace the hour (time) of both dates with 00:00
-//        let date1 = calendar.startOfDay(for: min)
-//        let date2 = calendar.startOfDay(for: secondDate)
-//        let components = calendar.dateComponents([.day], from: date1, to: date2)
-//    }
-
-    private func updateMaxRangeDays() {
-        minDate = calendar.date(byAdding: .day, value: -maxRangeDays, to: Date())!
-        maxDate = calendar.date(byAdding: .day, value: maxRangeDays, to: Date())!
-    }
-
-    private func updateCurrentDay() {
-        var comps = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: currentDate)
-        comps.weekday = currentWeekday.rawValue
-        currentDate = calendar.date(from: comps)!
+        currentDate >= minDate
     }
 }

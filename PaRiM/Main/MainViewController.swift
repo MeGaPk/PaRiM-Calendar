@@ -11,10 +11,10 @@ class MainViewController: UIViewController {
 
     private var layoutInstalled = false
 
-    let presenter = CalenderPresenter()
-    let mainView = MainView()
-
-    let modal = CalendarModal(provider: AmazonAPI())
+    private let calendar = DateCalculation()
+    private let presenter = CalenderPresenter()
+    private let mainView = MainView()
+    private let modal = CalendarModal(provider: AmazonAPI())
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,24 +23,31 @@ class MainViewController: UIViewController {
         presenter.tableView = mainView.tableView
         presenter.modal = modal
 
-        presenter.load()
-
         mainView.headerView.firstDayButton.addTarget(self, action: #selector(firstDayButtonTapped), for: .touchUpInside)
-        setTitle(modal.calendar.currentWeekday)
+        mainView.headerView.leftArrowButton.addTarget(self, action: #selector(leftArrowTapped), for: .touchUpInside)
+        mainView.headerView.rightArrowButton.addTarget(self, action: #selector(rightArrowTapped), for: .touchUpInside)
+
+        updateCalendar()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        firstDayButtonTapped()
-
-    }
 
     @objc func firstDayButtonTapped() {
-        WeekdayPicker.show(on: view!, selected: modal.calendar.currentWeekday) { weekday in
-            self.modal.calendar.currentWeekday = weekday
-            self.setTitle(weekday)
+        WeekdayPicker.show(on: view!, selected: calendar.currentWeekday) { weekday in
+            self.calendar.currentWeekday = weekday
+            self.updateCalendar()
         }
     }
+
+    @objc func rightArrowTapped() {
+        calendar.nextWeek()
+        updateCalendar()
+    }
+
+    @objc private func leftArrowTapped() {
+        calendar.previousWeek()
+        updateCalendar()
+    }
+
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -58,8 +65,25 @@ class MainViewController: UIViewController {
     }
 }
 
-extension MainViewController {
-    func setTitle(_ weekday: Weekday) {
+private extension MainViewController {
+    private func updateCalendar() {
+        updateDates()
+        updateTitle()
+        updateArrows()
+    }
+
+    private func updateArrows() {
+        mainView.headerView.leftArrowButton.isEnabled = calendar.hasPreviousWeek()
+        mainView.headerView.rightArrowButton.isEnabled = calendar.hasNextWeek()
+    }
+
+    private func updateDates() {
+        presenter.load(dates: calendar.getWeekDays())
+    }
+
+    func updateTitle() {
+        let weekday = calendar.currentWeekday
         mainView.headerView.firstDayButton.setTitle("\(weekday.toString())", for: .normal)
+        mainView.headerView.titleLabel.text = "\(calendar.getFirstDay().toTitleString()) — \(calendar.getLastDay().toTitleString())"
     }
 }

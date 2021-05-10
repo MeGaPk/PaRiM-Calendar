@@ -7,9 +7,10 @@ import UIKit
 class WeekdayPicker: NSObject {
     typealias CompletionHandler = (Weekday) -> ()
 
-    private static var weekdayPicker: WeekdayPicker? // to avoid deinit
+    private static var weekdayPicker: WeekdayPicker? // hack to avoid deinit
 
-    private let toolBar = Configure(UIToolbar()) {
+    // CGRect need to fix error in logs: https://stackoverflow.com/questions/58530406/unable-to-simultaneously-satisfy-constraints-when-uitoolbarcontentview-is-presen
+    private let toolBar = Configure(UIToolbar(frame:CGRect(origin: .zero, size: CGSize(width: 100, height: 44.0)))) {
         $0.barStyle = UIBarStyle.default
         $0.isTranslucent = true
         $0.tintColor = .black
