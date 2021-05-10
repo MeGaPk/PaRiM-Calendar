@@ -13,12 +13,16 @@ class MainViewController: UIViewController {
 
     let presenter = CalenderPresenter()
     let mainView = MainView()
+    let provider: CalendarProvider = AmazonAPI()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view?.backgroundColor = .white
         presenter.tableView = mainView.tableView
+        presenter.provider = provider
+
+//        presenter.load()
     }
 
     override func viewWillLayoutSubviews() {

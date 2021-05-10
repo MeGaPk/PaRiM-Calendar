@@ -9,7 +9,9 @@ class MainView: UIView {
     private var installed = false
 
     let headerView = MainHeaderView()
-    let tableView = UITableView()
+    let tableView = Configure(UITableView()) {
+        $0.backgroundColor = .lightGray
+    }
 
     convenience init() {
         self.init(frame: .zero)
