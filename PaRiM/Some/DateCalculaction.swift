@@ -25,7 +25,7 @@ class DateCalculation {
         var comps = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: startDate)
         comps.weekday = firstWeekday.rawValue
         startDate = calendar.date(from: comps)!
-        endDate = calendar.date(byAdding: .day, value: 6, to: startDate)!
+        endDate = calendar.date(byAdding: .day, value: duration - 1, to: startDate)!
     }
 }
 
