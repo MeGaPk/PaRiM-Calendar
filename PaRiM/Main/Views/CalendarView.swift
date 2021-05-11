@@ -4,11 +4,11 @@
 
 import UIKit
 
-class MainView: UIView {
+class CalendarView: UIView {
 
     private var installed = false
 
-    let headerView = MainHeaderView()
+    let headerView = CalendarHeaderView()
     let tableView = Configure(UITableView()) {
         $0.backgroundColor = .lightGray
     }

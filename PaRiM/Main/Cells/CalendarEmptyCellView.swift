@@ -4,7 +4,7 @@
 
 import UIKit
 
-class EmptyCalendarCellView: UITableViewCell {
+class CalendarEmptyCellView: UITableViewCell {
     static let identifier = "EmptyCalendarCellView"
 
     private let titleLabel = Configure(UILabel()) {

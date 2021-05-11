@@ -4,7 +4,7 @@
 
 import UIKit
 
-class CalendarHeaderFooterView: UITableViewHeaderFooterView {
+class CalendarTableHeaderView: UITableViewHeaderFooterView {
     static let identifier = "CalendarHeaderFooterView"
 
     let titleLabel = Configure(UILabel()) {

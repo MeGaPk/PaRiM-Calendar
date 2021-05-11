@@ -7,13 +7,13 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class CalendarViewController: UIViewController {
 
     private var layoutInstalled = false
 
     private let calendar = DateCalculation()
-    private let presenter = CalenderPresenter()
-    private let mainView = MainView()
+    private let presenter = CalendarTableViewPresenter()
+    private let mainView = CalendarView()
     private let modal = CalendarModal(provider: AmazonAPI())
 
     override func viewDidLoad() {
@@ -65,7 +65,7 @@ class MainViewController: UIViewController {
     }
 }
 
-private extension MainViewController {
+private extension CalendarViewController {
     private func updateCalendar() {
         updateDates()
         updateTitle()

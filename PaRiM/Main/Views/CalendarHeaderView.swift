@@ -4,7 +4,7 @@
 
 import UIKit
 
-class MainHeaderView: UIView {
+class CalendarHeaderView: UIView {
 
     private var installed = false
 
