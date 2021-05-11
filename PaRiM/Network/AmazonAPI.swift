@@ -9,6 +9,8 @@ class AmazonAPI: CalendarProvider {
         $0.keyDecodingStrategy = .convertFromSnakeCase
     }
 
+    private var eventsTask: URLSessionDataTask?
+
     struct Response: Codable {
         enum ErrorReason: String, Codable {
             case invalidDates = "invalid-dates"
@@ -37,7 +39,8 @@ class AmazonAPI: CalendarProvider {
             }
         }
 
-        post(url: url, body: body) { result in
+        eventsTask?.cancel()
+        eventsTask = post(url: url, body: body) { result in
             switch result {
             case .success(let data):
                 guard let data = data else {
@@ -69,22 +72,28 @@ class AmazonAPI: CalendarProvider {
                     failureCallback(.unknown(error: error))
                 }
             case .failure(let error):
+                // ignore cancelled request
+                if error._code == -999 {
+                    return
+                }
                 failureCallback(.unknown(error: error))
             }
         }
     }
 
-    private func post(url: URL, body: [String: Any], completion: @escaping (Result<Data?, Error>) -> ()) {
+    private func post(url: URL, body: [String: Any], completion: @escaping (Result<Data?, Error>) -> ()) -> URLSessionDataTask {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
 
-        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
             completion(.success(data))
-        }).resume()
+        })
+        task.resume()
+        return task
     }
 }

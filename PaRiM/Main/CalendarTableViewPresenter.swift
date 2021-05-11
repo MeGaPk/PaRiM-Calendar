@@ -3,12 +3,12 @@
 //
 
 import UIKit
+import DiffableDataSources
 
 class CalendarTableViewPresenter: NSObject {
 
     public var tableView: UITableView? {
         didSet {
-            tableView?.dataSource = self
             tableView?.delegate = self
             tableView?.estimatedRowHeight = 20
 
@@ -18,47 +18,36 @@ class CalendarTableViewPresenter: NSObject {
         }
     }
 
-    var modal: CalendarModal?
-
-    func load(dates: [Date]) {
-        modal?.load(dates: dates) {
-            self.tableView?.reloadData()
-        }
+    lazy var dataSource = TableViewDiffableDataSource<Date, CalendarEvent?>(tableView: tableView!) { tableView, indexPath, event in
+        CalendarCellFactory.calendarCell(tableView, event: event, for: indexPath)
     }
 
-}
+    let modal = CalendarModal(provider: AmazonAPI())
 
-extension CalendarTableViewPresenter: UITableViewDataSource {
-    public func numberOfSections(in tableView: UITableView) -> Int {
-        modal?.getDates()?.count ?? 0
+    override init() {
+        super.init()
+        modal.delegate = self
     }
 
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        modal?.getEvents(by: section)?.count ?? 1 // 1 need to show "No events" cell
-    }
-
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let event = modal?.getEvent(by: indexPath) else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: CalendarEmptyCellView.identifier, for: indexPath) as! CalendarEmptyCellView
-            cell.contentView.backgroundColor = .appBackgroundColor
-            return cell
-        }
-        if let cell = tableView.dequeueReusableCell(withIdentifier: CalendarCellView.identifier, for: indexPath) as? CalendarCellView {
-            cell.contentView.backgroundColor = .appBackgroundColor
-            cell.setText(text: event.name)
-            cell.setTextColor(event.textColor())
-            cell.setContainerBackgroundColor(event.backgroundColor())
-            return cell
-        }
-        fatalError("Cannot load any cell. Maybe you forgot to register it?")
+    func present(dates: [Date]) {
+        modal.load(dates: dates)
     }
 }
 
+extension CalendarTableViewPresenter: CalendarModalDelegate {
+    func loaded(dates: [Date], events: [String: [CalendarEvent]]) {
+        makeAndApplySnapshot(dates: dates, holidays: events)
+    }
+
+    func updated(dates: [Date], events: [String: [CalendarEvent]]) {
+        makeAndApplySnapshot(dates: dates, holidays: events)
+    }
+}
 
 extension CalendarTableViewPresenter: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let event = modal?.getEvent(by: indexPath)
-        return event != nil ? UITableView.automaticDimension : 20
+        let event = dataSource.itemIdentifier(for: indexPath)
+        return event != nil ? UITableView.automaticDimension : 20 // not event, mean will be show "No events" cell, so size is 20 for it.
     }
 
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -67,30 +56,25 @@ extension CalendarTableViewPresenter: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: CalendarTableHeaderView.identifier) as? CalendarTableHeaderView {
-            view.contentView.backgroundColor = .appBackgroundColor
-            view.titleLabel.text = modal?.getDate(by: section)?.toSectionString()
+            let date = dataSource.snapshot().sectionIdentifiers[section]
+            view.titleLabel.text = date.toSectionString()
             return view
         }
         return nil
     }
 }
 
-private extension CalendarEvent {
-    func textColor() -> UIColor {
-        switch type {
-        case .folk:
-            return .appFolkTitleColor
-        case .common:
-            return .appCommonTitleColor
+private extension CalendarTableViewPresenter {
+    func makeAndApplySnapshot(dates: [Date], holidays: [String: [CalendarEvent]], animation: Bool = true, completion: (() -> Void)? = nil) {
+        var snapshot = DiffableDataSourceSnapshot<Date, CalendarEvent?>()
+        snapshot.appendSections(dates)
+        for date in dates {
+            let calendarEvents = holidays[date.toRequestString()]
+            let vs: [CalendarEvent?] = [nil]
+            snapshot.appendItems(calendarEvents ?? vs, toSection: date)
         }
-    }
-
-    func backgroundColor() -> UIColor {
-        switch type {
-        case .folk:
-            return .appFolkBackgroundColor
-        case .common:
-            return .appCommonBackgroundColor
+        dataSource.apply(snapshot, animatingDifferences: animation) {
+            completion?()
         }
     }
 }
