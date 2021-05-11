@@ -13,7 +13,7 @@ class CalendarModal {
 
     private var provider: CalendarProvider
 
-    private var dates: [Date] = []
+    var dates: [Date] = []
     private var events: [String: [CalendarEvent]] = [:]
 
     init(provider: CalendarProvider) {

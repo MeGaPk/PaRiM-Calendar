@@ -20,8 +20,13 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view?.backgroundColor = .appBackgroundColor
-        presenter.tableView = mainView.tableView
+
+        // hack
+        calendar.previousWeek()
+        modal.dates = calendar.getWeekDays()
+
         presenter.modal = modal
+        presenter.tableView = mainView.tableView
 
         mainView.headerView.firstDayButton.addTarget(self, action: #selector(firstDayButtonTapped), for: .touchUpInside)
         mainView.headerView.leftArrowButton.addTarget(self, action: #selector(leftArrowTapped), for: .touchUpInside)
@@ -75,7 +80,7 @@ private extension CalendarViewController {
     }
 
     private func updateDates() {
-        presenter.load(dates: calendar.getWeekDays())
+        presenter.present(dates: calendar.getWeekDays())
     }
 
     func updateTitle() {

@@ -3,12 +3,22 @@
 //
 
 import UIKit
+import DiffableDataSources
+
+extension CalendarEvent: Hashable {
+    var hashValue: Int {
+        name.hashValue
+    }
+
+    static func ==(lhs: CalendarEvent, rhs: CalendarEvent) -> Bool {
+        lhs.name == rhs.name && lhs.type == rhs.type
+    }
+}
 
 class CalendarTableViewPresenter: NSObject {
 
     public var tableView: UITableView? {
         didSet {
-            tableView?.dataSource = self
             tableView?.delegate = self
             tableView?.estimatedRowHeight = 20
 
@@ -18,27 +28,8 @@ class CalendarTableViewPresenter: NSObject {
         }
     }
 
-    var modal: CalendarModal?
-
-    func load(dates: [Date]) {
-        modal?.load(dates: dates) {
-            self.tableView?.reloadData()
-        }
-    }
-
-}
-
-extension CalendarTableViewPresenter: UITableViewDataSource {
-    public func numberOfSections(in tableView: UITableView) -> Int {
-        modal?.getDates()?.count ?? 0
-    }
-
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        modal?.getEvents(by: section)?.count ?? 1 // 1 need to show "No events" cell
-    }
-
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let event = modal?.getEvent(by: indexPath) else {
+    lazy var dataSource = TableViewDiffableDataSource<Date, CalendarEvent?>(tableView: tableView!) { tableView, indexPath, event in
+        guard let event = event else {
             let cell = tableView.dequeueReusableCell(withIdentifier: CalendarEmptyCellView.identifier, for: indexPath) as! CalendarEmptyCellView
             cell.contentView.backgroundColor = .appBackgroundColor
             return cell
@@ -50,10 +41,39 @@ extension CalendarTableViewPresenter: UITableViewDataSource {
             cell.setContainerBackgroundColor(event.backgroundColor())
             return cell
         }
-        fatalError("Cannot load any cell. Maybe you forgot to register it?")
+        return nil
+    }
+
+    var modal: CalendarModal?
+
+    override init() {
+        super.init()
+    }
+
+    func present(dates: [Date]) {
+        self.makeAndApplySnapshot(dates: dates, holidays: [:]) {
+            self.modal?.load(dates: dates) {
+                let events = self.modal!.getEvents()
+                print(dates, events)
+                self.makeAndApplySnapshot(dates: dates, holidays: events) {
+                }
+            }
+        }
+    }
+
+    func makeAndApplySnapshot(dates: [Date], holidays: [String: [CalendarEvent]], animation: Bool = true, completion: (() -> Void)? = nil) {
+        var snapshot = DiffableDataSourceSnapshot<Date, CalendarEvent?>()
+        snapshot.appendSections(dates)
+        for date in dates {
+            let calendarEvents = holidays[date.toRequestString()]
+            let vs: [CalendarEvent?] = [nil]
+            snapshot.appendItems(calendarEvents ?? vs, toSection: date)
+        }
+        self.dataSource.apply(snapshot, animatingDifferences: animation) {
+            completion?()
+        }
     }
 }
-
 
 extension CalendarTableViewPresenter: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
