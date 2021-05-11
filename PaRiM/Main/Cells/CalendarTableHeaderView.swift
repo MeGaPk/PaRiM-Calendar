@@ -1,5 +1,5 @@
 //
-// Created by Иван Гайдамакин on 09.05.2021.
+// Created by Ivan Gaydamakin on 09.05.2021.
 //
 
 import UIKit
@@ -20,11 +20,8 @@ class CalendarTableHeaderView: UITableViewHeaderFooterView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let offset = CGFloat(8)
-        var f = contentView.frame
-        f.origin.x += offset
-        f.size.width -= offset * 2
-        titleLabel.frame = f
+        let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        titleLabel.frame.update(insets: insets, by: contentView.frame)
     }
 
     override func prepareForReuse() {

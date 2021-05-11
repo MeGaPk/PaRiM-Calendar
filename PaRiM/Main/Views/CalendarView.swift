@@ -1,5 +1,5 @@
 //
-// Created by Иван Гайдамакин on 09.05.2021.
+// Created by Ivan Gaydamakin on 09.05.2021.
 //
 
 import UIKit
@@ -10,7 +10,8 @@ class CalendarView: UIView {
 
     let headerView = CalendarHeaderView()
     let tableView = Configure(UITableView()) {
-        $0.backgroundColor = .lightGray
+        $0.backgroundColor = .appBackgroundColor
+        $0.separatorStyle = .none
     }
 
     convenience init() {

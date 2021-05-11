@@ -1,5 +1,5 @@
 //
-// Created by Иван Гайдамакин on 10.05.2021.
+// Created by Ivan Gaydamakin on 10.05.2021.
 //
 
 import Foundation
@@ -13,8 +13,8 @@ class CalendarModal {
 
     private var provider: CalendarProvider
 
-    private(set) var dates: [Date] = []
-    private(set) var events: [String: [CalendarEvent]] = [:]
+    private var dates: [Date] = []
+    private var events: [String: [CalendarEvent]] = [:]
 
     init(provider: CalendarProvider) {
         self.provider = provider
@@ -36,5 +36,28 @@ class CalendarModal {
             }
             completion()
         }
+    }
+}
+
+
+extension CalendarModal {
+    func getDates() -> [Date]? {
+        dates
+    }
+
+    func getDate(by section: Int) -> Date? {
+        dates[section]
+    }
+
+    func getEvent(by indexPath: IndexPath) -> CalendarEvent? {
+        let date = dates[indexPath.section]
+        let dateString = date.toRequestString()
+        return events[dateString]?[indexPath.row]
+    }
+
+    func getEvents(by section: Int) -> [CalendarEvent]? {
+        let date = dates[section]
+        let dateString = date.toRequestString()
+        return events[dateString]
     }
 }

@@ -1,5 +1,5 @@
 //
-// Created by Иван Гайдамакин on 10.05.2021.
+// Created by Ivan Gaydamakin on 10.05.2021.
 //
 
 import Foundation

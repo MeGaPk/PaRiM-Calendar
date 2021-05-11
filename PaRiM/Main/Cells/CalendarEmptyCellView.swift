@@ -1,5 +1,5 @@
 //
-// Created by Иван Гайдамакин on 10.05.2021.
+// Created by Ivan Gaydamakin on 10.05.2021.
 //
 
 import UIKit
@@ -8,7 +8,7 @@ class CalendarEmptyCellView: UITableViewCell {
     static let identifier = "EmptyCalendarCellView"
 
     private let titleLabel = Configure(UILabel()) {
-        $0.font = UIFont.italicSystemFont(ofSize: 20)
+        $0.font = UIFont.italicSystemFont(ofSize: 16)
         $0.textColor = .black
         $0.text = "No events"
     }
@@ -20,11 +20,8 @@ class CalendarEmptyCellView: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        let offset = CGFloat(8)
-        var f = contentView.frame
-        f.origin.x += offset
-        f.size.width -= offset * 2
-        titleLabel.frame = f
+        let insets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        titleLabel.frame.update(insets: insets, by: contentView.frame)
     }
 
     required init?(coder: NSCoder) {

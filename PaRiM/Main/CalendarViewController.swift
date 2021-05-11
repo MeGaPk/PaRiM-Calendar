@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  PaRiM
 //
-//  Created by Иван Гайдамакин on 09.05.2021.
+//  Created by Ivan Gaydamakin on 09.05.2021.
 //
 
 import UIKit
@@ -19,7 +19,7 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        view?.backgroundColor = .white
+        view?.backgroundColor = .appBackgroundColor
         presenter.tableView = mainView.tableView
         presenter.modal = modal
 
@@ -33,17 +33,20 @@ class CalendarViewController: UIViewController {
 
     @objc func firstDayButtonTapped() {
         WeekdayPicker.show(on: view!, selected: calendar.firstWeekday) { weekday in
+            HapticFeedback.button(.selected)
             self.calendar.firstWeekday = weekday
             self.updateCalendar()
         }
     }
 
     @objc func rightArrowTapped() {
+        HapticFeedback.button(.next)
         calendar.nextWeek()
         updateCalendar()
     }
 
     @objc private func leftArrowTapped() {
+        HapticFeedback.button(.previous)
         calendar.previousWeek()
         updateCalendar()
     }

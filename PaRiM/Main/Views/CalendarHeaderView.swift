@@ -1,5 +1,5 @@
 //
-// Created by Иван Гайдамакин on 09.05.2021.
+// Created by Ivan Gaydamakin on 09.05.2021.
 //
 
 import UIKit
@@ -15,15 +15,15 @@ class CalendarHeaderView: UIView {
         $0.textAlignment = .center
     }
     let leftArrowButton = Configure(UIButton()) {
-        let config = UIImage.SymbolConfiguration(pointSize: 19.0, weight: .semibold, scale: .large)
-        let image = UIImage(systemName: "chevron.left", withConfiguration: config)
+        let image = UIImage(named: "backward")  // image I got from PaRiM app
         $0.setImage(image, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
         $0.tintColor = .white
     }
     let rightArrowButton = Configure(UIButton()) {
-        let config = UIImage.SymbolConfiguration(pointSize: 19.0, weight: .semibold, scale: .large)
-        let image = UIImage(systemName: "chevron.right", withConfiguration: config)
+        let image = UIImage(named: "forward") // image I got from PaRiM app
         $0.setImage(image, for: .normal)
+        $0.imageView?.contentMode = .scaleAspectFit
         $0.tintColor = .white
     }
 
@@ -39,7 +39,7 @@ class CalendarHeaderView: UIView {
 
     convenience init() {
         self.init(frame: .zero)
-        backgroundColor = UIColor(hex: 0x3B99D9)
+        backgroundColor = .appTitleHeaderColor
     }
 
     override func layoutSubviews() {
@@ -64,16 +64,18 @@ class CalendarHeaderView: UIView {
 
             leftArrowButton.pin(on: self) {
                 [
-                    $0.topAnchor.constraint(equalTo: firstDayButton.topAnchor),
+                    $0.centerYAnchor.constraint(equalTo: firstDayButton.centerYAnchor),
                     $0.leftAnchor.constraint(equalTo: $1.safeArea.leftAnchor, constant: 8),
-                    $0.bottomAnchor.constraint(equalTo: firstDayButton.bottomAnchor),
+                    $0.heightAnchor.constraint(equalToConstant: 30),
+                    $0.widthAnchor.constraint(equalToConstant: 30),
                 ]
             }
             rightArrowButton.pin(on: self) {
                 [
-                    $0.topAnchor.constraint(equalTo: firstDayButton.topAnchor),
+                    $0.centerYAnchor.constraint(equalTo: firstDayButton.centerYAnchor),
                     $0.rightAnchor.constraint(equalTo: $1.safeArea.rightAnchor, constant: -8),
-                    $0.bottomAnchor.constraint(equalTo: firstDayButton.bottomAnchor),
+                    $0.heightAnchor.constraint(equalToConstant: 30),
+                    $0.widthAnchor.constraint(equalToConstant: 30),
                 ]
             }
 
