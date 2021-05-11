@@ -16,6 +16,7 @@ class CalendarEmptyCellView: UITableViewCell {
     override init(style: CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(titleLabel)
+        contentView.backgroundColor = .appBackgroundColor
     }
 
     override func layoutSubviews() {

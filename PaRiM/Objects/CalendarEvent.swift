@@ -13,3 +13,13 @@ struct CalendarEvent: Codable {
     var name: String
     var type: EventType
 }
+
+extension CalendarEvent: Hashable {
+    var hashValue: Int {
+        name.hashValue
+    }
+
+    static func ==(lhs: CalendarEvent, rhs: CalendarEvent) -> Bool {
+        lhs.name == rhs.name && lhs.type == rhs.type
+    }
+}

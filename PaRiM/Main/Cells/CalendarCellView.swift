@@ -23,6 +23,8 @@ class CalendarCellView: UITableViewCell {
     override init(style: CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.layer.addSublayer(cornerBackgroundLayer)
+        contentView.backgroundColor = .appBackgroundColor
+
         let offset: CGFloat = 16 + 8
         titleLabel.pin(on: contentView) {
             [
