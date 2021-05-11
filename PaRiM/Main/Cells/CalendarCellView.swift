@@ -13,7 +13,6 @@ class CalendarCellView: UITableViewCell {
         $0.numberOfLines = 0
     }
     private let cornerBackgroundLayer = Configure(CALayer()) {
-        $0.cornerRadius = 16
         // Huge change in performance by explicitly setting the below (even though default is supposedly NO)
         $0.masksToBounds = false
         // Performance improvement here depends on the size of your view
@@ -40,6 +39,12 @@ class CalendarCellView: UITableViewCell {
         super.layoutSubviews()
         let insets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         cornerBackgroundLayer.frame.update(insets: insets, by: contentView.frame)
+
+        let cornerRadius = CGSize(width: 16.0, height: 16.0)
+        let pathWithRadius = UIBezierPath(roundedRect: cornerBackgroundLayer.bounds, byRoundingCorners:[.allCorners], cornerRadii: cornerRadius)
+        let mask = CAShapeLayer()
+        mask.path = pathWithRadius.cgPath
+        cornerBackgroundLayer.mask = mask
     }
 
     override func prepareForReuse() {
