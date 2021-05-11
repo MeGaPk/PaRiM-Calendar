@@ -32,8 +32,8 @@ class MainViewController: UIViewController {
 
 
     @objc func firstDayButtonTapped() {
-        WeekdayPicker.show(on: view!, selected: calendar.currentWeekday) { weekday in
-            self.calendar.currentWeekday = weekday
+        WeekdayPicker.show(on: view!, selected: calendar.firstWeekday) { weekday in
+            self.calendar.firstWeekday = weekday
             self.updateCalendar()
         }
     }
@@ -69,12 +69,6 @@ private extension MainViewController {
     private func updateCalendar() {
         updateDates()
         updateTitle()
-        updateArrows()
-    }
-
-    private func updateArrows() {
-        mainView.headerView.leftArrowButton.isEnabled = calendar.hasPreviousWeek()
-        mainView.headerView.rightArrowButton.isEnabled = calendar.hasNextWeek()
     }
 
     private func updateDates() {
@@ -82,8 +76,8 @@ private extension MainViewController {
     }
 
     func updateTitle() {
-        let weekday = calendar.currentWeekday
+        let weekday = calendar.firstWeekday
         mainView.headerView.firstDayButton.setTitle("\(weekday.toString())", for: .normal)
-        mainView.headerView.titleLabel.text = "\(calendar.getFirstDay().toTitleString()) — \(calendar.getLastDay().toTitleString())"
+        mainView.headerView.titleLabel.text = "\(calendar.getFirstDayOfWeek().toTitleString()) — \(calendar.getLastDayOfWeek().toTitleString())"
     }
 }
