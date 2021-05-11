@@ -3,3 +3,7 @@
 //
 
 import Foundation
+
+protocol CalendarStorage {
+    func getEvents(from: Date, to: Date) -> [String: [CalendarEvent]]
+}

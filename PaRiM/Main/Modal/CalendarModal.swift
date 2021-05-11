@@ -12,24 +12,28 @@ protocol CalendarModalDelegate: AnyObject {
 class CalendarModal {
     weak var delegate: CalendarModalDelegate?
 
-    private var provider: CalendarProvider
+    private let provider: CalendarProvider
     private var bounceTimer: Timer?
+
+    private let storage: CalendarStorage = RealmStorage()
 
     init(provider: CalendarProvider) {
         self.provider = provider
     }
 
     public func load(dates: [Date]) {
-        guard let from = dates.first?.toRequestString(), let to = dates.last?.toRequestString() else {
+        guard let from = dates.first, let to = dates.last else {
             return
         }
-
 //        TODO: implement load cached on realm events here
-        delegate?.loaded(dates: dates, events: [:])
+        let cachedEvents = storage.getEvents(from: from, to: to)
+        delegate?.loaded(dates: dates, events: cachedEvents)
 
         bounceTimer?.invalidate()
         bounceTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { [weak self]timer in
-            self?.provider.getEvents(from: from, to: to) { [weak self]result in
+            let fromString = from.toRequestString()
+            let toString = to.toRequestString()
+            self?.provider.getEvents(from: fromString, to: toString) { [weak self]result in
                 switch result {
                 case .success(let holidays):
                     print(holidays)

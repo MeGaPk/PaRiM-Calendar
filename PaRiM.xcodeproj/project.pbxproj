@@ -15,10 +15,12 @@
 		4CF6040A264AE5AE0067EF17 /* DiffableDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 4CF60409264AE5AE0067EF17 /* DiffableDataSources */; };
 		5F7CE00D9A0021C83AD9F9D4 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE1BA7F64C9DF1731EE37 /* HapticFeedback.swift */; };
 		5F7CE0396ABDE87861387916 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE083E28F5EFDC773D2DC /* CalendarView.swift */; };
+		5F7CE0A75F17D5101C6E3ED6 /* Date+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CEE059E7F2915EA60AA7B /* Date+Helper.swift */; };
 		5F7CE166FA1DC3F657DBE0AF /* CalendarStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CEAB7D69FC1CF672AC3BB /* CalendarStorage.swift */; };
 		5F7CE262524FC58AE4DC347D /* CalendarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE7BEEE74B97EA87D84F3 /* CalendarTableHeaderView.swift */; };
 		5F7CE2BB0968872CF67043A5 /* CalendarEmptyCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE3AAE236AB474C69C508 /* CalendarEmptyCellView.swift */; };
 		5F7CE2EFEBF4766AD5D6620B /* CalendarProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CEC5A11F23948B3D1FE4A /* CalendarProvider.swift */; };
+		5F7CE44F99352A7ADF863492 /* RealmStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE50E62E191FC60D4CE5D /* RealmStorage.swift */; };
 		5F7CE484E1EEB23777A93C41 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE407E307802272D93513 /* CalendarHeaderView.swift */; };
 		5F7CE48C9D04F96F4F6C29A9 /* CalendarCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE80CC567979AD71A04BC /* CalendarCellFactory.swift */; };
 		5F7CE4997F09C48A725D8F2B /* WeekdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7CE4252B64EC3890ABA465 /* WeekdayPicker.swift */; };
@@ -53,6 +55,7 @@
 		5F7CE407E307802272D93513 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
 		5F7CE4252B64EC3890ABA465 /* WeekdayPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekdayPicker.swift; sourceTree = "<group>"; };
 		5F7CE463178FEDB6A9F80B87 /* Weekday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weekday.swift; sourceTree = "<group>"; };
+		5F7CE50E62E191FC60D4CE5D /* RealmStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmStorage.swift; sourceTree = "<group>"; };
 		5F7CE5A3CB67235E09BF9E29 /* Date+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Formatter.swift"; sourceTree = "<group>"; };
 		5F7CE71CC5E664F476E02658 /* CalendarCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCellView.swift; sourceTree = "<group>"; };
 		5F7CE7B8590631ACF04CF9EF /* UIView+Frame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Frame.swift"; sourceTree = "<group>"; };
@@ -64,6 +67,7 @@
 		5F7CEB879F5D5BFBE87B4621 /* Configure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configure.swift; sourceTree = "<group>"; };
 		5F7CEC5A11F23948B3D1FE4A /* CalendarProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarProvider.swift; sourceTree = "<group>"; };
 		5F7CEDDFE4346C9ED4735CAE /* UIView+AutoLayouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AutoLayouter.swift"; sourceTree = "<group>"; };
+		5F7CEE059E7F2915EA60AA7B /* Date+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Helper.swift"; sourceTree = "<group>"; };
 		5F7CEE1D864987D12EDC6A1C /* CalendarEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarEvent.swift; sourceTree = "<group>"; };
 		5F7CEF9E105F8261178C1A73 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		5F7CEFD05F56E522B3DF7CBC /* AmazonAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmazonAPI.swift; sourceTree = "<group>"; };
@@ -120,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				5F7CEAB7D69FC1CF672AC3BB /* CalendarStorage.swift */,
+				5F7CE50E62E191FC60D4CE5D /* RealmStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -190,6 +195,7 @@
 				5F7CE5A3CB67235E09BF9E29 /* Date+Formatter.swift */,
 				5F7CE003600FAF1DD155B30D /* UIColor+AppColors.swift */,
 				5F7CE7B8590631ACF04CF9EF /* UIView+Frame.swift */,
+				5F7CEE059E7F2915EA60AA7B /* Date+Helper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -307,6 +313,8 @@
 				5F7CEB1A19FD999F61B3DA99 /* UIView+Frame.swift in Sources */,
 				5F7CE00D9A0021C83AD9F9D4 /* HapticFeedback.swift in Sources */,
 				5F7CE48C9D04F96F4F6C29A9 /* CalendarCellFactory.swift in Sources */,
+				5F7CE44F99352A7ADF863492 /* RealmStorage.swift in Sources */,
+				5F7CE0A75F17D5101C6E3ED6 /* Date+Helper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,20 +31,9 @@ class DateCalculation {
 
 extension DateCalculation {
     func getWeekDays() -> [Date] {
-        var dates = [Date]()
-        var days = DateComponents()
-        var dayCount = 0
-        while true {
-            days.day = dayCount
-            let date = calendar.date(byAdding: days, to: getFirstDayOfWeek())!
-            if date.compare(getLastDayOfWeek()) == .orderedDescending {
-                break
-            }
-            dayCount += 1
-            dates.append(date)
+        getFirstDayOfWeek().rangeEveryDay(to: getLastDayOfWeek()).map {
+            $0
         }
-
-        return dates
     }
 
     func getFirstDayOfWeek() -> Date {
