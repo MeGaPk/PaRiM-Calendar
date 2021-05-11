@@ -9,6 +9,8 @@ class CalendarTableViewPresenter: NSObject {
 
     public var tableView: UITableView? {
         didSet {
+            dataSource.defaultRowAnimation = .fade
+
             tableView?.delegate = self
             tableView?.estimatedRowHeight = 20
 
@@ -18,11 +20,11 @@ class CalendarTableViewPresenter: NSObject {
         }
     }
 
-    lazy var dataSource = TableViewDiffableDataSource<Date, CalendarEvent?>(tableView: tableView!) { tableView, indexPath, event in
+    private lazy var dataSource = TableViewDiffableDataSource<Date, CalendarEvent?>(tableView: tableView!) { tableView, indexPath, event in
         CalendarCellFactory.calendarCell(tableView, event: event, for: indexPath)
     }
 
-    let modal = CalendarModal(provider: AmazonAPI())
+    private let modal = CalendarModal(provider: AmazonAPI())
 
     override init() {
         super.init()
@@ -44,6 +46,7 @@ extension CalendarTableViewPresenter: CalendarModalDelegate {
     }
 }
 
+// Render section view and for height cell and section view
 extension CalendarTableViewPresenter: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let event = dataSource.itemIdentifier(for: indexPath)
@@ -55,12 +58,8 @@ extension CalendarTableViewPresenter: UITableViewDelegate {
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: CalendarTableHeaderView.identifier) as? CalendarTableHeaderView {
-            let date = dataSource.snapshot().sectionIdentifiers[section]
-            view.titleLabel.text = date.toSectionString()
-            return view
-        }
-        return nil
+        let date = dataSource.snapshot().sectionIdentifiers[section]
+        return CalendarCellFactory.calendarHeader(tableView, date: date)
     }
 }
 

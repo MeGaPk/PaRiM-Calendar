@@ -16,6 +16,14 @@ class CalendarCellFactory {
         }
         return nil
     }
+
+    static func calendarHeader(_ tableView: UITableView, date: Date) -> UITableViewHeaderFooterView? {
+        if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: CalendarTableHeaderView.identifier) as? CalendarTableHeaderView {
+            view.titleLabel.text = date.toSectionString()
+            return view
+        }
+        return nil
+    }
 }
 
 private extension CalendarEvent {
