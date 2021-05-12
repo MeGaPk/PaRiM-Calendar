@@ -22,22 +22,33 @@ class CalendarModal {
     }
 
     public func load(dates: [Date]) {
+        storage.getEvents(dates: dates) { [weak self] events, notFoundDates in
+            self?.delegate?.loaded(dates: dates, events: events)
+            if notFoundDates.count > 0 {
+                self?.loadFromProvider(dates: notFoundDates)
+            }
+        }
+    }
+
+    private func loadFromProvider(dates: [Date]) {
+        print("load from provider: \(dates)")
         guard let from = dates.first, let to = dates.last else {
             return
         }
-//        TODO: implement load cached on realm events here
-        let cachedEvents = storage.getEvents(from: from, to: to)
-        delegate?.loaded(dates: dates, events: cachedEvents)
-
         bounceTimer?.invalidate()
         bounceTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false, block: { [weak self]timer in
             let fromString = from.toRequestString()
             let toString = to.toRequestString()
+            print("REQUEST: \(fromString) -> \(toString)")
             self?.provider.getEvents(from: fromString, to: toString) { [weak self]result in
                 switch result {
                 case .success(let holidays):
                     print(holidays)
-                    self?.delegate?.updated(dates: dates, events: holidays)
+                    self?.storage.save(dates: dates, events: holidays) {
+                        self?.storage.getEvents(dates: dates) { [weak self] events, notFoundDates in
+                            self?.delegate?.updated(dates: dates, events: events)
+                        }
+                    }
                 case .failure(let error):
                     print("error: \(error)")
                 }
