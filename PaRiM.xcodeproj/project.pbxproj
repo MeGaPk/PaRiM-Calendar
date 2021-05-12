@@ -260,8 +260,8 @@
 			);
 			mainGroup = 4C698BBE26485873008E6E41;
 			packageReferences = (
-				4C698BDE26485CBE008E6E41 /* XCRemoteSwiftPackageReference "realm-cocoa.git" */,
-				4CF60408264AE5AE0067EF17 /* XCRemoteSwiftPackageReference "DiffableDataSources.git" */,
+				4C698BDE26485CBE008E6E41 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				4CF60408264AE5AE0067EF17 /* XCRemoteSwiftPackageReference "DiffableDataSources" */,
 			);
 			productRefGroup = 4C698BC826485873008E6E41 /* Products */;
 			projectDirPath = "";
@@ -455,14 +455,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PaRiM/PaRiM.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 639F2A946H;
+				DEVELOPMENT_TEAM = NR627NQ2DR;
 				INFOPLIST_FILE = PaRiM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = in.gaydamak.PaRiM;
+				PRODUCT_BUNDLE_IDENTIFIER = "in.gaydamak.parim-testwork";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -477,14 +477,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PaRiM/PaRiM.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 639F2A946H;
+				DEVELOPMENT_TEAM = NR627NQ2DR;
 				INFOPLIST_FILE = PaRiM/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = in.gaydamak.PaRiM;
+				PRODUCT_BUNDLE_IDENTIFIER = "in.gaydamak.parim-testwork";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
@@ -516,7 +516,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4C698BDE26485CBE008E6E41 /* XCRemoteSwiftPackageReference "realm-cocoa.git" */ = {
+		4C698BDE26485CBE008E6E41 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-cocoa.git";
 			requirement = {
@@ -524,7 +524,7 @@
 				minimumVersion = 10.7.5;
 			};
 		};
-		4CF60408264AE5AE0067EF17 /* XCRemoteSwiftPackageReference "DiffableDataSources.git" */ = {
+		4CF60408264AE5AE0067EF17 /* XCRemoteSwiftPackageReference "DiffableDataSources" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ra1028/DiffableDataSources.git";
 			requirement = {
@@ -537,17 +537,17 @@
 /* Begin XCSwiftPackageProductDependency section */
 		4C698BDF26485CBE008E6E41 /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4C698BDE26485CBE008E6E41 /* XCRemoteSwiftPackageReference "realm-cocoa.git" */;
+			package = 4C698BDE26485CBE008E6E41 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = Realm;
 		};
 		4C698BE126485CBE008E6E41 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4C698BDE26485CBE008E6E41 /* XCRemoteSwiftPackageReference "realm-cocoa.git" */;
+			package = 4C698BDE26485CBE008E6E41 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
 		};
 		4CF60409264AE5AE0067EF17 /* DiffableDataSources */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4CF60408264AE5AE0067EF17 /* XCRemoteSwiftPackageReference "DiffableDataSources.git" */;
+			package = 4CF60408264AE5AE0067EF17 /* XCRemoteSwiftPackageReference "DiffableDataSources" */;
 			productName = DiffableDataSources;
 		};
 /* End XCSwiftPackageProductDependency section */

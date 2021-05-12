@@ -16,7 +16,7 @@ class WeekdayPicker: NSObject {
         $0.tintColor = .black
         $0.sizeToFit()
         $0.isUserInteractionEnabled = true
-    }
+     }
     private let picker = UIPickerView()
     // fake keyboard for show picker
     private let dummy = UITextField(frame: .zero)
@@ -39,6 +39,7 @@ class WeekdayPicker: NSObject {
         picker.dataSource = self
         picker.delegate = self
 
+//        TODO: fix dark theme
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneTapped))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelTapped))

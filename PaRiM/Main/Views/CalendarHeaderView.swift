@@ -14,13 +14,13 @@ class CalendarHeaderView: UIView {
         $0.font = .systemFont(ofSize: 20, weight: .bold)
         $0.textAlignment = .center
     }
-    let leftArrowButton = Configure(UIButton()) {
+    let leftArrowButton: UIButton = Configure(IncreasedTapAreaButton()) {
         let image = UIImage(named: "backward")  // image I got from PaRiM app
         $0.setImage(image, for: .normal)
         $0.imageView?.contentMode = .scaleAspectFit
         $0.tintColor = .white
     }
-    let rightArrowButton = Configure(UIButton()) {
+    let rightArrowButton: UIButton = Configure(IncreasedTapAreaButton()) {
         let image = UIImage(named: "forward") // image I got from PaRiM app
         $0.setImage(image, for: .normal)
         $0.imageView?.contentMode = .scaleAspectFit
@@ -87,6 +87,16 @@ class CalendarHeaderView: UIView {
             }
         }
         firstDayButton.layer.cornerRadius = firstDayButton.frame.size.height / 2
+    }
+
+}
+
+fileprivate class IncreasedTapAreaButton: UIButton {
+    var margin: CGFloat = 20.0
+
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let area = bounds.insetBy(dx: -margin, dy: -margin)
+        return area.contains(point)
     }
 
 }
