@@ -461,7 +461,7 @@
 				CODE_SIGN_ENTITLEMENTS = PaRiM/PaRiM.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NR627NQ2DR;
-				INFOPLIST_FILE = PaRiM/Info.plist;
+				INFOPLIST_FILE = "PaRiM/Support Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -483,7 +483,7 @@
 				CODE_SIGN_ENTITLEMENTS = PaRiM/PaRiM.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NR627NQ2DR;
-				INFOPLIST_FILE = PaRiM/Info.plist;
+				INFOPLIST_FILE = "PaRiM/Support Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
