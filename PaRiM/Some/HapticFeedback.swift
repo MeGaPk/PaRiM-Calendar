@@ -13,20 +13,20 @@ final class HapticFeedback {
 
     private static let shared = HapticFeedback()
 
-    private var light = UIImpactFeedbackGenerator(style: .light)
+    private var medium = UIImpactFeedbackGenerator(style: .medium)
     private var selected = UISelectionFeedbackGenerator()
 
     init() {
-        light.prepare()
+        medium.prepare()
         selected.prepare()
     }
 
     static func button(_ type: ButtonType) {
         switch type {
         case .next:
-            shared.light.impactOccurred()
+            shared.medium.impactOccurred()
         case .previous:
-            shared.light.impactOccurred()
+            shared.medium.impactOccurred()
         case .selected:
             shared.selected.selectionChanged()
         }

@@ -18,6 +18,10 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>AmazonApiUrl</key>
+	<string>https://wozmx9dh26.execute-api.eu-west-1.amazonaws.com/api</string>
+	<key>AmazonApiKey</key>
+	<string>e4ea80ffb3c3d9fb3cd4bdaa8a1a13e8</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.business</string>
 	<key>LSRequiresIPhoneOS</key>

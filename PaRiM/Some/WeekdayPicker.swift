@@ -16,7 +16,7 @@ class WeekdayPicker: NSObject {
         $0.tintColor = .black
         $0.sizeToFit()
         $0.isUserInteractionEnabled = true
-    }
+     }
     private let picker = UIPickerView()
     // fake keyboard for show picker
     private let dummy = UITextField(frame: .zero)

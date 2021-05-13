@@ -13,5 +13,5 @@ enum CustomError: Error {
 }
 
 protocol CalendarProvider {
-    func getEvents(from: String, to: String, completion: @escaping (Result<[String: [CalendarEvent]], CustomError>) -> ())
+    func getHolidays(from: String, to: String, completion: @escaping (Result<[String: [CalendarHolidayDay]], CustomError>) -> ())
 }

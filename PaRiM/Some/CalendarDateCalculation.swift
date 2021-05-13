@@ -4,7 +4,7 @@
 
 import Foundation
 
-class DateCalculation {
+class CalendarDateCalculation {
     private var calendar = Calendar.current
     private var duration = 7
 
@@ -29,7 +29,7 @@ class DateCalculation {
     }
 }
 
-extension DateCalculation {
+extension CalendarDateCalculation {
     func getWeekDays() -> [Date] {
         getFirstDayOfWeek().rangeEveryDay(to: getLastDayOfWeek()).map {
             $0
@@ -45,12 +45,12 @@ extension DateCalculation {
     }
 
     func nextWeek() {
-        startDate = calendar.date(byAdding: .day, value: 7, to: startDate)!
+        startDate = calendar.date(byAdding: .day, value: duration, to: startDate)!
         updateStartAndEndDate()
     }
 
     func previousWeek() {
-        startDate = calendar.date(byAdding: .day, value: -7, to: startDate)!
+        startDate = calendar.date(byAdding: .day, value: -duration, to: startDate)!
         updateStartAndEndDate()
     }
 }

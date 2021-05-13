@@ -5,5 +5,6 @@
 import Foundation
 
 protocol CalendarStorage {
-    func getEvents(from: Date, to: Date) -> [String: [CalendarEvent]]
+    func load(dates: [Date], completion: @escaping (_ cached: [String: [CalendarHolidayDay]], _ needToLoad: [Date]) -> ())
+    func save(dates: [Date], holidays: [String: [CalendarHolidayDay]], completion: @escaping () -> ())
 }
