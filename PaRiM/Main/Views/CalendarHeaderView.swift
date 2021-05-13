@@ -9,7 +9,7 @@ class CalendarHeaderView: UIView {
     private var installed = false
 
     let titleLabel = Configure(UILabel()) {
-        $0.text = "Tere tulemast"
+        $0.text = "Date to Date"
         $0.textColor = .white
         $0.font = .systemFont(ofSize: 20, weight: .bold)
         $0.textAlignment = .center
@@ -28,7 +28,7 @@ class CalendarHeaderView: UIView {
     }
 
     let firstDayButton = Configure(UIButton()) {
-        $0.setTitle("First", for: .normal)
+        $0.setTitle("Weekday", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         $0.titleLabel?.textAlignment = .center
@@ -91,6 +91,7 @@ class CalendarHeaderView: UIView {
 
 }
 
+// Used for increate tap area of button. For better UX experience
 fileprivate class IncreasedTapAreaButton: UIButton {
     var margin: CGFloat = 20.0
 
