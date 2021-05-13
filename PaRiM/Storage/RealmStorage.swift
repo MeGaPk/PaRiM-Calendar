@@ -1,5 +1,5 @@
 //
-// Created by Иван Гайдамакин on 11.05.2021.
+// Created by Ivan Gaydamakin on 11.05.2021.
 //
 
 import Foundation
@@ -25,11 +25,6 @@ class CalendarRealm: Object {
 }
 
 class RealmStorage {
-
-    init() {
-
-    }
-
     let queue = DispatchQueue(label: "realm.queue")
 
     private func realm() -> Realm? {
@@ -39,23 +34,14 @@ class RealmStorage {
             return try Realm(configuration: config)
         } catch let error as NSError {
             print("Cannot init realm, exception: \(error)")
-            // Handle error
             return nil
         }
-    }
-
-    private func generateEmptyId(by date: Date) -> String {
-        "\(date.toRequestString())_\(emptyId())"
-    }
-
-    private func emptyId() -> String {
-        "empty"
     }
 }
 
 extension RealmStorage: CalendarStorage {
-    func getEvents(dates: [Date], completion: @escaping (_ cached: [String: [CalendarEvent]], _ needToLoad: [Date]) -> ()) {
-        var events = [String: [CalendarEvent]]()
+    func load(dates: [Date], completion: @escaping (_ cached: [String: [CalendarHolidayDay]], _ needToLoad: [Date]) -> ()) {
+        var events = [String: [CalendarHolidayDay]]()
 
         var needToLoad: [Date] = []
 
@@ -67,33 +53,30 @@ extension RealmStorage: CalendarStorage {
                 let dateString = eventRealm.date.toRequestString()
                 events[dateString] = []
                 for event in eventRealm.events {
-                    guard let type = EventType(rawValue: event.type) else {
+                    guard let type = CalendarHolidayDay.DayType(rawValue: event.type) else {
                         return
                     }
-                    events[dateString]?.append(CalendarEvent(name: event.name, type: type))
+                    events[dateString]?.append(CalendarHolidayDay(name: event.name, type: type))
                 }
             }
+            // For detect "need to load" dates and clean up
             for date in from.rangeEveryDay(to: to) {
                 let dateString = date.toRequestString()
 
                 let event = events[dateString]
                 if event == nil {
-                    print("NEED TO LOAD: \(dateString)")
                     needToLoad.append(date)
-                } else {
-                    if let event = event, event.count == 0 {
-                        events[dateString] = nil
-                    }
+                } else if events[dateString]?.count ?? 0 == 0 {
+                    events[dateString] = nil
                 }
             }
-            print("CACHE LOADED ", events)
             DispatchQueue.main.async {
                 completion(events, needToLoad)
             }
         }
     }
 
-    func save(dates: [Date], events: [String: [CalendarEvent]], completion: @escaping () -> ()) {
+    func save(dates: [Date], holidays: [String: [CalendarHolidayDay]], completion: @escaping () -> ()) {
         queue.async { [weak self] in
             do {
                 let r = self?.realm()
@@ -102,7 +85,7 @@ extension RealmStorage: CalendarStorage {
                         let calendarRealm = CalendarRealm()
                         calendarRealm.date = date
 
-                        if let events = events[date.toRequestString()] {
+                        if let events = holidays[date.toRequestString()] {
                             for event in events {
                                 let eventRealm = CalendarEventRealm()
                                 eventRealm.name = event.name
@@ -112,7 +95,6 @@ extension RealmStorage: CalendarStorage {
                         }
 
                         r?.add(calendarRealm, update: .modified)
-                        print("write: \(calendarRealm)")
                     }
                 }
             } catch (let error) {

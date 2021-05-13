@@ -5,12 +5,6 @@
 import Foundation
 
 class AmazonAPI: CalendarProvider {
-    private static let decoder = Configure(JSONDecoder()) {
-        $0.keyDecodingStrategy = .convertFromSnakeCase
-    }
-
-    private var eventsTask: URLSessionDataTask?
-
     struct Response: Codable {
         enum ErrorReason: String, Codable {
             case invalidDates = "invalid-dates"
@@ -19,19 +13,22 @@ class AmazonAPI: CalendarProvider {
         }
 
         let error: Bool
-        let holidays: [String: [CalendarEvent]]?
+        let holidays: [String: [CalendarHolidayDay]]?
         let reason: ErrorReason?
     }
 
-    func getEvents(from: String, to: String, completion: @escaping (Result<[String: [CalendarEvent]], CustomError>) -> ()) {
+    private static let decoder = Configure(JSONDecoder()) {
+        $0.keyDecodingStrategy = .convertFromSnakeCase
+    }
 
+    private var eventsTask: URLSessionDataTask?
+
+    func getHolidays(from: String, to: String, completion: @escaping (Result<[String: [CalendarHolidayDay]], CustomError>) -> ()) {
         let body: [String: Any] = [
-            "apiKey": "e4ea80ffb3c3d9fb3cd4bdaa8a1a13e8",
+            "apiKey": Bundle.amazonApiKey ?? "",
             "startDate": from,
             "endDate": to,
         ]
-
-        let url = URL(string: "https://wozmx9dh26.execute-api.eu-west-1.amazonaws.com/api/holidays")!
 
         let failureCallback = { (error: CustomError) in
             DispatchQueue.main.async {
@@ -40,7 +37,7 @@ class AmazonAPI: CalendarProvider {
         }
 
         eventsTask?.cancel()
-        eventsTask = post(url: url, body: body) { result in
+        eventsTask = post(path: "holidays", body: body) { result in
             switch result {
             case .success(let data):
                 guard let data = data else {
@@ -61,8 +58,8 @@ class AmazonAPI: CalendarProvider {
                             }
                             return
                         }
-//                        TODO: implement localizedDescription here
-                        failureCallback(.unknown(error: NSError(domain: "in.gaydamak", code: 404, userInfo: nil)))
+                        let userInfo = [NSLocalizedDescriptionKey: "Unknown reason error"]
+                        failureCallback(.unknown(error: NSError(domain: "in.gaydamak", code: 404, userInfo: userInfo)))
                         return
                     }
                     DispatchQueue.main.async {
@@ -81,7 +78,10 @@ class AmazonAPI: CalendarProvider {
         }
     }
 
-    private func post(url: URL, body: [String: Any], completion: @escaping (Result<Data?, Error>) -> ()) -> URLSessionDataTask {
+    private func post(path: String, body: [String: Any], completion: @escaping (Result<Data?, Error>) -> ()) -> URLSessionDataTask {
+        let baseUrl = Bundle.amazonApiUrl ?? ""
+        let url = URL(string: "\(baseUrl)/\(path)")!
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)

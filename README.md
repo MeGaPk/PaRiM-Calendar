@@ -6,5 +6,5 @@
 
 ### Performance issues when:
 - Updating tableview
-- Put duration more 100 days in DateCalculation class
-- UITableView with UITableView.automaticDimension. I used it for auto calculation UILabel.
+- Put `duration` more 100 days in `CalendarDateCalculation.swift`
+- `UITableView` with `UITableView.automaticDimension`. I used it only for auto calculation UILabel.

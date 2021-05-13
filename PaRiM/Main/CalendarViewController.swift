@@ -11,7 +11,7 @@ class CalendarViewController: UIViewController {
 
     private var layoutInstalled = false
 
-    private let calendar = DateCalculation()
+    private let calendar = CalendarDateCalculation()
     private let presenter = CalendarTableViewPresenter()
     private let mainView = CalendarView()
 
@@ -19,11 +19,6 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view?.backgroundColor = .appBackgroundColor
-
-        // hack
-        #if DEBUG
-        calendar.previousWeek()
-        #endif
 
         presenter.tableView = mainView.tableView
 

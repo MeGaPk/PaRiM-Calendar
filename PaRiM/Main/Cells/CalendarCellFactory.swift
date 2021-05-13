@@ -1,11 +1,11 @@
 //
-// Created by Иван Гайдамакин on 11.05.2021.
+// Created by Ivan Gaydamakin on 11.05.2021.
 //
 
 import UIKit
 
 class CalendarCellFactory {
-    static func calendarCell(_ tableView: UITableView, event: CalendarEvent?, for indexPath: IndexPath) -> UITableViewCell? {
+    static func calendarCell(_ tableView: UITableView, event: CalendarHolidayDay?, for indexPath: IndexPath) -> UITableViewCell? {
         if let event = event, let cell = tableView.dequeueReusableCell(withIdentifier: CalendarCellView.identifier, for: indexPath) as? CalendarCellView {
             cell.setText(text: event.name)
             cell.setTextColor(event.textColor())
@@ -26,7 +26,7 @@ class CalendarCellFactory {
     }
 }
 
-private extension CalendarEvent {
+private extension CalendarHolidayDay {
     func textColor() -> UIColor {
         switch type {
         case .folk:

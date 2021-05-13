@@ -20,8 +20,8 @@ class CalendarTableViewPresenter: NSObject {
         }
     }
 
-    private lazy var dataSource = TableViewDiffableDataSource<Date, CalendarEvent?>(tableView: tableView!) { tableView, indexPath, event in
-        CalendarCellFactory.calendarCell(tableView, event: event, for: indexPath)
+    private lazy var dataSource = TableViewDiffableDataSource<Date, CalendarHolidayDay?>(tableView: tableView!) { tableView, indexPath, holiday in
+        CalendarCellFactory.calendarCell(tableView, event: holiday, for: indexPath)
     }
 
     private let modal = CalendarModal(provider: AmazonAPI())
@@ -37,12 +37,12 @@ class CalendarTableViewPresenter: NSObject {
 }
 
 extension CalendarTableViewPresenter: CalendarModalDelegate {
-    func loaded(dates: [Date], events: [String: [CalendarEvent]]) {
-        makeAndApplySnapshot(dates: dates, holidays: events)
+    func loaded(dates: [Date], holidays: [String: [CalendarHolidayDay]]) {
+        makeAndApplySnapshot(dates: dates, holidays: holidays)
     }
 
-    func updated(dates: [Date], events: [String: [CalendarEvent]]) {
-        makeAndApplySnapshot(dates: dates, holidays: events)
+    func updated(dates: [Date], holidays: [String: [CalendarHolidayDay]]) {
+        makeAndApplySnapshot(dates: dates, holidays: holidays)
     }
 }
 
@@ -50,7 +50,7 @@ extension CalendarTableViewPresenter: CalendarModalDelegate {
 extension CalendarTableViewPresenter: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let event = dataSource.itemIdentifier(for: indexPath)
-        return event != nil ? UITableView.automaticDimension : 20 // not event, mean will be show "No events" cell, so size is 20 for it.
+        return event != nil ? UITableView.automaticDimension : 20 // event == nil, mean will be show "No events" cell, so size is 20 for it.
     }
 
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -64,13 +64,13 @@ extension CalendarTableViewPresenter: UITableViewDelegate {
 }
 
 private extension CalendarTableViewPresenter {
-    func makeAndApplySnapshot(dates: [Date], holidays: [String: [CalendarEvent]], animation: Bool = true, completion: (() -> Void)? = nil) {
-        var snapshot = DiffableDataSourceSnapshot<Date, CalendarEvent?>()
+    func makeAndApplySnapshot(dates: [Date], holidays: [String: [CalendarHolidayDay]], animation: Bool = true, completion: (() -> Void)? = nil) {
+        var snapshot = DiffableDataSourceSnapshot<Date, CalendarHolidayDay?>()
         snapshot.appendSections(dates)
         for date in dates {
-            let calendarEvents = holidays[date.toRequestString()]
-            let vs: [CalendarEvent?] = [nil]
-            snapshot.appendItems(calendarEvents ?? vs, toSection: date)
+            let calendarHolidays = holidays[date.toRequestString()]
+            let vs: [CalendarHolidayDay?] = [nil]
+            snapshot.appendItems(calendarHolidays ?? vs, toSection: date)
         }
         dataSource.apply(snapshot, animatingDifferences: animation) {
             completion?()

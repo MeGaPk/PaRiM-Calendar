@@ -39,7 +39,6 @@ class WeekdayPicker: NSObject {
         picker.dataSource = self
         picker.delegate = self
 
-//        TODO: fix dark theme
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneTapped))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelTapped))
