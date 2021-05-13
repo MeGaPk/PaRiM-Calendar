@@ -10,17 +10,21 @@ class CalendarCellFactory {
             cell.setText(text: event.name)
             cell.setTextColor(event.textColor())
             cell.setContainerBackgroundColor(event.backgroundColor())
+            cell.backgroundColor = .appBackgroundColor
             return cell
         } else if let cell = tableView.dequeueReusableCell(withIdentifier: CalendarEmptyCellView.identifier, for: indexPath) as? CalendarEmptyCellView {
+            cell.backgroundColor = .appBackgroundColor
             return cell
         }
         return nil
     }
 
     static func calendarHeader(_ tableView: UITableView, date: Date) -> UITableViewHeaderFooterView? {
-        if let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: CalendarTableHeaderView.identifier) as? CalendarTableHeaderView {
-            view.titleLabel.text = date.toSectionString()
-            return view
+        if let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CalendarTableHeaderView.identifier) as? CalendarTableHeaderView {
+            cell.titleLabel.text = date.toSectionString()
+            cell.tintColor = .appBackgroundColor
+            cell.contentView.backgroundColor = .appBackgroundColor // for ios 12
+            return cell
         }
         return nil
     }

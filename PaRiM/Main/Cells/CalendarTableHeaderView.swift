@@ -16,7 +16,6 @@ class CalendarTableHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         contentView.addSubview(titleLabel)
-        contentView.backgroundColor = .appBackgroundColor
     }
 
     override func layoutSubviews() {
